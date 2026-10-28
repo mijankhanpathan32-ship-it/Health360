@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Health360 | Your Personal Wellness Platform</title>
+
+    <meta name="description"
+          content="Health360 helps you organize daily wellness, activity, sleep and hydration in one place.">
+
+    <!-- Bootstrap CSS from the existing Arsha template assets -->
+    <link href="{{ url_for('static', filename='assets/vendor/bootstrap/css/bootstrap.min.css') }}"
+          rel="stylesheet">
+
+    <!-- Arsha template stylesheet -->
+    <link href="{{ url_for('static', filename='assets/css/main.css') }}"
+          rel="stylesheet">
+
+    <style>
+        :root {
+            --health-primary: #37517e;
+            --health-accent: #47b2e4;
+            --health-bg: #f5f9ff;
+            --health-text: #444444;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: var(--health-text);
+            margin: 0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .health-header {
+            background: #37517e;
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .health-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .brand {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .brand span {
+            color: #47b2e4;
+        }
+
+        .health-nav {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .health-nav a {
+            color: white;
+            font-weight: 500;
+        }
+
+        .health-nav a:hover {
+            color: #47b2e4;
+        }
+
+        .nav-button {
+            border: 2px solid #47b2e4;
+            border-radius: 25px;
+            padding: 9px 18px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #37517e, #20375c);
+            color: white;
+            padding: 85px 0;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 5vw, 54px);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 22px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #e5ecf8;
+            max-width: 650px;
+        }
+
+        .primary-button {
+            display: inline-block;
+            background: #47b2e4;
+            color: white;
+            border-radius: 30px;
+            padding: 13px 25px;
+            margin: 12px 10px 0 0;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .primary-button:hover {
+            background: #299bcf;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .secondary-button {
+            display: inline-block;
+            border: 2px solid white;
+            color: white;
+            border-radius: 30px;
+            padding: 11px 24px;
+            margin-top: 12px;
+        }
+
+        .secondary-button:hover {
+            background: white;
+            color: var(--health-primary);
+        }
+
+        .hero-panel {
+            background: white;
+            color: var(--health-primary);
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero-panel h3 {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .mini-stat {
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 14px;
+            background: #f1f7fd;
+        }
+
+        .mini-stat strong {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .mini-stat span {
+            color: #68778b;
+            font-size: 14px;
+        }
+
+        .section-padding {
+            padding: 75px 0;
+        }
+
+        .section-title {
+            color: var(--health-primary);
+            font-weight: bold;
+            font-size: 34px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .section-description {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 45px;
+            line-height: 1.8;
+        }
+
+        .feature-card {
+            height: 100%;
+            background: white;
+            padding: 28px;
+            border-radius: 18px;
+            box-shadow: 0 5px 25px rgba(55, 81, 126, 0.08);
+            border: 1px solid #edf1f8;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(55, 81, 126, 0.13);
+        }
+
+        .feature-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 58px;
+            height: 58px;
+            border-radius: 16px;
+            background: #e5f5fd;
+            color: #258fc1;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            color: var(--health-primary);
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .feature-card p {
+            line-height: 1.8;
+            margin-bottom: 0;
+        }
+
+        .about-section {
+            background: var(--health-bg);
+        }
+
+        .about-box {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            height: 100%;
+        }
+
+        .about-box h3 {
+            color: var(--health-primary);
+            font-weight: bold;
+        }
+
+        .about-box li {
+            margin-bottom: 14px;
+        }
+
+        .cta-section {
+            background: #37517e;
+            color: white;
+            text-align: center;
+            padding: 65px 20px;
+        }
+
+        .cta-section h2 {
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+
+        .health-footer {
+            background: #233654;
+            color: #e5ecf8;
+            padding: 28px 0;
+            text-align: center;
+        }
+
+        .health-footer p {
+            margin: 5px 0;
+        }
+
+        .health-footer a {
+            color: #47b2e4;
+        }
+
+        @media (max-width: 768px) {
+            .health-header .container {
+                justify-content: center;
+            }
+
+            .health-nav {
+                justify-content: center;
+                gap: 14px;
+            }
+
+            .hero {
+                padding: 55px 0;
+                text-align: center;
+            }
+
+            .hero p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-panel {
+                margin-top: 30px;
+                text-align: left;
+            }
+
+            .section-padding {
+                padding: 50px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER AND NAVIGATION -->
+    <header class="health-header">
+        <div class="container">
+
+            <a href="/" class="brand">
+                Health<span>360</span>
+            </a>
+
+            <nav class="health-nav" aria-label="Main navigation">
+                <a href="/">Home</a>
+                <a href="#about">About</a>
+                <a href="#features">Features</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="story.html">Project Story</a>
+                <a href="dashboard.html" class="nav-button">Get Started</a>
+            </nav>
+
+        </div>
+    </header>
+
+
+    <!-- HERO SECTION -->
+    <main>
+
+        <section class="hero">
+            <div class="container">
+                <div class="row align-items-center g-5">
+
+                    <div class="col-lg-7">
+
+                        <p style="color: #47b2e4; font-weight: bold;">
+                            YOUR WELLNESS, ONE PLATFORM
+                        </p>
+
+                        <h1>
+                            Take Control of Your Health with Health360
+                        </h1>
+
+                        <p>
+                            Your everyday wellness companion. Organize your
+                            activity, sleep, hydration and personal wellness
+                            goals in one simple and accessible platform.
+                        </p>
+
+                        <a href="dashboard.html" class="primary-button">
+                            Explore Dashboard →
+                        </a>
+
+                        <a href="#features" class="secondary-button">
+                            Discover Features
+                        </a>
+
+                    </div>
+
+                    <div class="col-lg-5">
+
+                        <div class="hero-panel">
+
+                            <h3>🌿 Your Wellness Overview</h3>
+
+                            <p>
+                                A preview of the information you can organize
+                                with Health360.
+                            </p>
+
+                            <div class="mini-stat">
+                                <strong>♥ Heart Health</strong>
+                                <span>Keep a record of your measurements</span>
+                            </div>
+
+                            <div class="mini-stat">
+                                <strong>🚶 Daily Activity</strong>
+                                <span>Review your movement and activity</span>
+                            </div>
+
+                            <div class="mini-stat">
+                                <strong>🌙 Sleep & Recovery</strong>
+                                <span>Record your sleep routine</span>
+                            </div>
+
+                            <small>
+                                Illustrative preview — no live health data
+                                is connected.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ABOUT SECTION -->
+        <section id="about" class="section-padding about-section">
+
+            <div class="container">
+
+                <h2 class="section-title">About Health360</h2>
+
+                <p class="section-description">
+                    Health360 is a digital wellness project designed to help
+                    people organize everyday health information and build
+                    awareness of their personal wellness habits.
+                </p>
+
+                <div class="row g-4">
+
+                    <div class="col-lg-6">
+                        <div class="about-box">
+                            <h3>Our Mission</h3>
+                            <p>
+                                Make everyday wellness tracking simpler by
+                                bringing useful information into one
+                                convenient place.
+                            </p>
+                            <p>
+                                Instead of keeping separate notes for daily
+                                activities, users can use one platform to
+                                organize their wellness records.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="about-box">
+                            <h3>What We Offer</h3>
+                            <ul>
+                                <li>One place for wellness information</li>
+                                <li>Daily activity and hydration records</li>
+                                <li>Sleep tracking records</li>
+                                <li>A personal wellness journal</li>
+                                <li>An easy-to-understand dashboard</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FEATURES SECTION -->
+        <section id="features" class="section-padding">
+
+            <div class="container">
+
+                <h2 class="section-title">Explore Our Features</h2>
+
+                <p class="section-description">
+                    Simple tools to help you maintain and review your
+                    everyday wellness information.
+                </p>
+
+                <div class="row g-4">
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h3>Wellness Dashboard</h3>
+                            <p>
+                                View your wellness information in an
+                                organized and easy-to-understand layout.
+                            </p>
+                            <a href="dashboard.html">Open Dashboard →</a>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">❤️</div>
+                            <h3>Health Records</h3>
+                            <p>
+                                Organize personal measurements and review
+                                the records you enter.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">🚶</div>
+                            <h3>Activity Tracking</h3>
+                            <p>
+                                Keep a record of daily movement, steps
+                                and personal activity goals.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">🌙</div>
+                            <h3>Sleep Journal</h3>
+                            <p>
+                                Record sleep duration and review your
+                                sleeping routine over time.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">💧</div>
+                            <h3>Hydration Records</h3>
+                            <p>
+                                Record your daily water intake and review
+                                your hydration habits.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">📝</div>
+                            <h3>Wellness Journal</h3>
+                            <p>
+                                Write personal notes about your daily
+                                wellness habits and progress.
+                            </p>
+                            <a href="story.html">Explore Our Project →</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- HOW IT WORKS SECTION -->
+        <section class="section-padding about-section">
+
+            <div class="container">
+
+                <h2 class="section-title">How Health360 Works</h2>
+
+                <p class="section-description">
+                    A simple approach to organizing your wellness journey.
+                </p>
+
+                <div class="row g-4">
+
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">①</div>
+                            <h3>Record</h3>
+                            <p>
+                                Enter your daily wellness information
+                                when the relevant feature is available.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">②</div>
+                            <h3>Organize</h3>
+                            <p>
+                                Keep your information structured
+                                for easier review.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">③</div>
+                            <h3>Review</h3>
+                            <p>
+                                Look back at your records and reflect
+                                on your personal wellness habits.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CALL TO ACTION -->
+        <section class="cta-section">
+
+            <div class="container">
+
+                <h2>Your Wellness Journey Starts Here</h2>
+
+                <p>
+                    Explore your personal wellness dashboard
+                    and learn more about Health360.
+                </p>
+
+                <a href="dashboard.html" class="primary-button">
+                    Go to Dashboard →
+                </a>
+
+                <a href="story.html" class="secondary-button">
+                    Read Our Story
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="health-footer">
+
+        <div class="container">
+
+            <h3>Health360</h3>
+
+            <p>
+                Organize your wellness. Understand your habits.
+            </p>
+
+            <p>
+                <a href="/">Home</a> 
+                <a href="dashboard.html">Dashboard</a> 
+                <a href="story.html">Project Story</a>
+            </p>
+
+            <p>
+                © 2026 Health360 | Student Project
+            </p>
+
+            <small>
+                Health360 is a wellness tracking project, not a substitute
+                for professional medical advice.
+            </small>
+
+        </div>
+
+    </footer>
+
+</body>
+</html>
